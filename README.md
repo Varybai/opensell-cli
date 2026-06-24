@@ -7,11 +7,11 @@
   <img alt="OpenSell" src="assets/opensell-logo.png" width="300">
 </picture>
 
-### The agent-facing front door to the OpenSell C2C marketplace
+### CLI and MCP server for the OpenSell C2C marketplace
 
-One shared tool registry, two surfaces: a command-line interface for humans and scripts,
-and a Model Context Protocol server for LLM runtimes. They are generated from the same
-source, so they never drift.
+The `opensell` command and the `opensell-mcp` server read one shared tool registry. A developer at
+a terminal and an AI agent over MCP call the same operations, with the same arguments and the same
+permissions, because both come from that single definition.
 
 [![CI](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
@@ -28,37 +28,33 @@ source, so they never drift.
 
 ## What is this?
 
-**OpenSell** is a consumer-to-consumer (C2C) marketplace built for the agentic era — designed so
-that AI agents can browse, message, buy, sell, and settle on the same rails a human would use.
+**OpenSell** is a consumer-to-consumer (C2C) marketplace where AI agents buy and sell alongside
+people, over the same APIs people use.
 
-This repository is the **integration layer**: everything an agent or developer needs to talk to the
-marketplace, and nothing of the private backend. It ships as a Rust [Cargo workspace](./Cargo.toml)
-of three crates:
+This repository is the client side. It holds the code an agent or a developer needs to call the
+marketplace; the marketplace backend stays private. Three Rust crates make up the
+[Cargo workspace](./Cargo.toml):
 
 | Crate | Type | Binary | Purpose |
 |---|---|---|---|
 | **`opensell-core`** | lib | — | Shared tool registry, REST client, and tool-dispatch logic |
 | **`opensell-cli`** | bin | `opensell` | Command-line interface for buyers, sellers, and AI agents |
-| **`opensell-mcp`** | bin | `opensell-mcp` | MCP **stdio** server exposing marketplace tools to LLM runtimes |
+| **`opensell-mcp`** | bin | `opensell-mcp` | MCP **stdio** server that exposes marketplace tools to LLM runtimes |
 
-Settlement is **Arc on-chain** (USDC via `usdc_arc`) — there is no Stripe dependency.
+Orders settle on-chain in USDC on Arc (`usdc_arc`).
 
 ---
 
 ## ✨ Highlights
 
-- **Single source of truth.** Both the CLI and the MCP server derive every command, scope, tier,
-  and input schema from one `TOOL_REGISTRY` ([`core/src/registry.rs`](./core/src/registry.rs)) —
-  CLI and MCP can never disagree about what a tool does.
-- **20 marketplace tools** spanning read, messaging, listing, ordering, payment, and encrypted
-  digital-credential delivery.
-- **Scope-based authorization.** The MCP server filters `list_tools` by the agent token's scopes;
-  the CLI surfaces the required scope in every subcommand's `--help`.
-- **Deterministic exit codes.** Failures print a normalized `{"error","message"}` to stderr with a
-  stable, machine-distinguishable exit code per error class.
-- **Agent sandbox limits.** Payment tools honour backend-enforced per-transaction, balance, and
-  daily-spend caps — safe to hand to an autonomous agent.
-- **Anonymous browsing by design.** Read endpoints work with no token at all.
+- The registry in [`core/src/registry.rs`](./core/src/registry.rs) defines all 20 tools once: name,
+  scope, tier, and input schema. The CLI and the MCP server both read it, so they stay in step.
+- The MCP server filters `list_tools` by the token's scopes. The CLI prints the required scope in
+  each subcommand's `--help`.
+- Failures go to stderr as `{"error","message"}`, each with a fixed exit code a script can branch on.
+- Payment tools respect the backend's per-transaction, balance, and daily-spend limits before any
+  money moves, so you can give an agent a token and cap what it spends.
+- Read endpoints work without a token, so an agent can browse the catalog before it has credentials.
 
 ---
 
@@ -74,8 +70,8 @@ flowchart LR
     API -.->|on-chain settlement| Arc["Arc · USDC"]
 ```
 
-`opensell-core` owns the registry and all REST/dispatch logic; the CLI and MCP binaries are thin
-adapters over it. Add a tool to the registry once and it appears in **both** surfaces.
+Both binaries are thin wrappers over `opensell-core`, which holds the registry and the REST and
+dispatch logic. Add a tool to the registry and it shows up in the CLI and the MCP server at once.
 
 ---
 
@@ -111,7 +107,7 @@ cargo build --release          # binaries in target/release/
 export AIXIANYU_BASE_URL="https://varybai.online/api"   # default; override for self-hosting
 export AIXIANYU_AGENT_TOKEN="ats_xxx"                   # from /console/agent-tokens
 
-# 2. List the full machine-readable command surface (great for agents)
+# 2. List the full machine-readable command surface (handy for agents)
 opensell catalog
 
 # 3. Browse — no token required for reads
@@ -123,15 +119,14 @@ opensell place-order --item-id 18
 opensell pay-order --order-id 7
 ```
 
-Every command also accepts `--token` and `--base-url` flags, which override the environment
-variables.
+`--token` and `--base-url` work on every command and override the environment variables.
 
 ---
 
 ## 🤖 MCP Integration
 
-`opensell-mcp` speaks the Model Context Protocol over **stdio**. Wire it into any MCP-capable
-client (Claude Desktop, IDE agents, custom runtimes):
+`opensell-mcp` serves the Model Context Protocol over stdio. Add it to any MCP client (Claude
+Desktop, an IDE agent, your own runtime):
 
 ```json
 {
@@ -147,17 +142,16 @@ client (Claude Desktop, IDE agents, custom runtimes):
 }
 ```
 
-On connect, the server resolves the token's scopes and exposes **only** the tools that token is
-allowed to call (`list_tools` is scope-filtered). With no/invalid token it degrades gracefully to
-the read-only `items:read` tools, so agents can always browse the catalog.
+When a client connects, the server reads the token's scopes and lists only the tools that token can
+call. Without a token, or with a bad one, it falls back to the read-only `items:read` tools, so an
+agent can still browse.
 
 ---
 
 ## 🧰 Tool Catalog
 
-All 20 tools are organized by **tier** (escalating capability) and gated by **scope**. The CLI
-command is the tool name with underscores replaced by hyphens (e.g. `search_items` →
-`search-items`).
+The 20 tools sit in tiers of escalating capability, and a scope guards each one. A CLI command is
+the tool name with underscores swapped for hyphens (`search_items` becomes `search-items`).
 
 <details open>
 <summary><b>Tier 0–1 · Read</b> — public, anonymous browsing</summary>
@@ -215,22 +209,22 @@ command is the tool name with underscores replaced by hyphens (e.g. `search_item
 
 ## 🔐 Authentication & Scopes
 
-Read operations under `items:read` — `ping`, `search-items`, `get-item`, `list-categories` — are
-**publicly accessible**: they return data with no token, or even an invalid/expired one (the token
-is simply ignored). Everything else requires a valid agent token with the matching scope.
+The `items:read` reads (`ping`, `search-items`, `get-item`, `list-categories`) are public. They
+return data with no token, or with an expired one; the server ignores the token on these routes.
+Everything else needs a valid agent token carrying the matching scope.
 
-Pass the token via `--token` or `AIXIANYU_AGENT_TOKEN`. Scope errors are explicit:
+Pass the token with `--token` or `AIXIANYU_AGENT_TOKEN`. Scope errors are specific:
 
-- invalid / expired / missing token → exit **2** (`UNAUTHORIZED`)
-- valid token lacking the required scope → exit **3** (`INSUFFICIENT_SCOPE`)
-- valid token, but the resource isn't yours → exit **9** (`FORBIDDEN`)
+- invalid, expired, or missing token → exit **2** (`UNAUTHORIZED`)
+- valid token, wrong scope → exit **3** (`INSUFFICIENT_SCOPE`)
+- valid token, someone else's resource → exit **9** (`FORBIDDEN`)
 
 ---
 
 ## 🧾 Exit Codes
 
-Successes print the JSON payload to **stdout**; failures print `{"error","message"}` to **stderr**.
-The exit code is stable per error class:
+A success prints its JSON payload to **stdout**. A failure prints `{"error","message"}` to
+**stderr** and exits with a fixed code per error class:
 
 | Code | Meaning | Source |
 |---|---|---|
@@ -246,9 +240,9 @@ The exit code is stable per error class:
 | 9 | `FORBIDDEN` — authenticated but not permitted | backend 403 |
 | 64 | CLI usage error — bad/missing/unknown arguments (`EX_USAGE`) | argument parser |
 
-Usage errors are **64**, never **2**, so a caller can always tell "I called it wrong" apart from
-"auth failed". Negative numeric values (`--min-price -50`, `--limit -1`) are accepted as values and
-validated by the backend, not rejected as unknown flags.
+A usage error exits **64**, not **2**, so a caller can tell "I called it wrong" apart from "auth
+failed". A negative number (`--min-price -50`, `--limit -1`) is read as a value and checked by the
+backend, not rejected as an unknown flag.
 
 ---
 
@@ -261,9 +255,8 @@ validated by the backend, not rejected as unknown flags.
 
 ## 💸 Payments & Settlement
 
-Orders settle on **Arc** on-chain in **USDC** (`usdc_arc`). Payment and withdrawal tools run inside
-an agent **sandbox**: the backend enforces per-transaction, balance, and daily-spend limits before
-any funds move, so an autonomous agent can transact within bounds you control.
+Orders settle on-chain in USDC on Arc (`usdc_arc`). The backend checks per-transaction, balance, and
+daily-spend limits before any funds move, so an agent spends only within the bounds you set.
 
 ---
 
@@ -283,8 +276,8 @@ cargo publish -p opensell-cli
 cargo publish -p opensell-mcp
 ```
 
-Parity with the original Python reference implementation (catalog surface, exit codes, REST
-mapping, handler semantics) is documented in [`PARITY.md`](./PARITY.md).
+`PARITY.md` records how this Rust version matches the original Python implementation: catalog
+surface, exit codes, REST mapping, and handler behavior.
 
 ---
 

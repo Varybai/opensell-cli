@@ -7,11 +7,10 @@
   <img alt="OpenSell" src="assets/opensell-logo.png" width="300">
 </picture>
 
-### 面向 AI 智能体的 OpenSell C2C 交易市场接入层
+### OpenSell C2C 市场的命令行工具与 MCP 服务器
 
-同一份工具注册表，两种使用形态：一个面向人类与脚本的命令行工具，
-以及一个面向 LLM 运行时的 Model Context Protocol（MCP）服务器。
-二者由同一来源生成，因此永不偏移。
+`opensell` 命令和 `opensell-mcp` 服务器读取同一份工具注册表。开发者在终端里敲命令，AI 智能体通过 MCP
+调用，二者拿到的操作、参数和权限完全一致，因为它们都由这份定义生成。
 
 [![CI](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
@@ -28,34 +27,29 @@
 
 ## 这是什么？
 
-**OpenSell** 是一个为智能体时代打造的消费者对消费者（C2C）交易市场——让 AI 智能体能够像人类一样，
-在同一套链路上浏览、沟通、买卖与结算。
+**OpenSell** 是一个 C2C（个人对个人）二手市场，AI 智能体和真人用同一套 API 买卖。
 
-本仓库是它的**集成层**：包含智能体或开发者与市场对接所需的一切，但**不含**任何私有后端代码。它以一个
-Rust [Cargo 工作区](./Cargo.toml)的形式发布，包含三个 crate：
+这个仓库是客户端部分，装着智能体或开发者调用市场所需的代码；市场后端不在这里，保持私有。整个 Rust
+[Cargo 工作区](./Cargo.toml)由三个 crate 组成：
 
 | Crate | 类型 | 二进制 | 用途 |
 |---|---|---|---|
-| **`opensell-core`** | lib | — | 共享的工具注册表、REST 客户端与工具分发逻辑 |
-| **`opensell-cli`** | bin | `opensell` | 面向买家、卖家与 AI 智能体的命令行界面 |
-| **`opensell-mcp`** | bin | `opensell-mcp` | 通过 **stdio** 向 LLM 运行时暴露市场工具的 MCP 服务器 |
+| **`opensell-core`** | lib | — | 共享的工具注册表、REST 客户端、工具分发逻辑 |
+| **`opensell-cli`** | bin | `opensell` | 给买家、卖家和 AI 智能体用的命令行界面 |
+| **`opensell-mcp`** | bin | `opensell-mcp` | 通过 **stdio** 把市场工具暴露给 LLM 运行时的 MCP 服务器 |
 
-结算走 **Arc 链上**（USDC，经由 `usdc_arc`）——不依赖 Stripe。
+订单在 Arc 链上以 USDC（`usdc_arc`）结算。
 
 ---
 
 ## ✨ 亮点
 
-- **单一事实来源。** CLI 与 MCP 服务器的每一个命令、权限范围（scope）、层级（tier）与输入模式
-  都派生自同一份 `TOOL_REGISTRY`（[`core/src/registry.rs`](./core/src/registry.rs)）——CLI 与 MCP
-  对"某个工具做什么"永远不会产生分歧。
-- **20 个市场工具**，覆盖浏览、消息、上架、下单、支付与加密数字凭证交付。
-- **基于 scope 的鉴权。** MCP 服务器按智能体 token 的 scope 过滤 `list_tools`；CLI 在每个子命令的
-  `--help` 中标明所需 scope。
-- **确定性退出码。** 失败时向 stderr 输出规范化的 `{"error","message"}`，每类错误对应稳定、可被
-  机器区分的退出码。
-- **智能体沙箱限额。** 支付类工具遵守后端强制的单笔、余额与每日消费限额——可安全交给自主智能体使用。
-- **匿名浏览即设计。** 读取类接口无需任何 token 即可使用。
+- 注册表 [`core/src/registry.rs`](./core/src/registry.rs) 一次性定义全部 20 个工具：名字、scope、tier、
+  输入模式。CLI 和 MCP 服务器都读它，所以两边始终一致。
+- MCP 服务器按 token 的 scope 过滤 `list_tools`；CLI 在每个子命令的 `--help` 里写明所需 scope。
+- 失败时往 stderr 打 `{"error","message"}`，每类错误带一个固定退出码，脚本可以据此分支。
+- 支付类工具在动钱之前先过后端的单笔、余额、每日消费限额，所以你可以把 token 交给智能体，并限定它能花多少。
+- 读取接口不需要 token，智能体在拿到凭证之前就能浏览目录。
 
 ---
 
@@ -71,8 +65,8 @@ flowchart LR
     API -.->|链上结算| Arc["Arc · USDC"]
 ```
 
-`opensell-core` 持有注册表与全部 REST／分发逻辑；CLI 与 MCP 二进制只是它之上的薄适配层。
-往注册表里加一个工具，它就会**同时**出现在两种形态中。
+两个二进制都是 `opensell-core` 之上的薄封装，注册表和 REST／分发逻辑都在 core 里。往注册表加一个工具，
+它就同时出现在 CLI 和 MCP 服务器里。
 
 ---
 
@@ -111,23 +105,23 @@ export AIXIANYU_AGENT_TOKEN="ats_xxx"                   # 来自 /console/agent-
 # 2. 列出完整的、机器可读的命令清单（很适合智能体）
 opensell catalog
 
-# 3. 浏览——读取无需 token
+# 3. 浏览：读取不需要 token
 opensell search-items --q "GPT-4o key" --max-price 50
 opensell get-item --item-id 18
 
-# 4. 交易——需要 token 与对应 scope
+# 4. 交易：需要 token 和对应 scope
 opensell place-order --item-id 18
 opensell pay-order --order-id 7
 ```
 
-每个命令也都接受 `--token` 与 `--base-url` 参数，它们会覆盖环境变量。
+`--token` 和 `--base-url` 对每个命令都生效，会覆盖环境变量。
 
 ---
 
 ## 🤖 MCP 集成
 
-`opensell-mcp` 通过 **stdio** 讲 Model Context Protocol。可接入任何支持 MCP 的客户端
-（Claude Desktop、IDE 智能体、自定义运行时）：
+`opensell-mcp` 通过 stdio 提供 Model Context Protocol。把它加到任意 MCP 客户端里（Claude Desktop、
+IDE 智能体、你自己的运行时）：
 
 ```json
 {
@@ -143,22 +137,22 @@ opensell pay-order --order-id 7
 }
 ```
 
-连接时，服务器会解析 token 的 scope，并**只**暴露该 token 被允许调用的工具（`list_tools` 按 scope
-过滤）。在无 token／无效 token 时，会优雅降级为只读的 `items:read` 工具，因此智能体始终能浏览目录。
+客户端连上时，服务器读取 token 的 scope，只列出这个 token 能调的工具。没有 token 或 token 无效时，
+回退到只读的 `items:read` 工具，智能体仍然能浏览。
 
 ---
 
 ## 🧰 工具目录
 
-全部 20 个工具按**层级（tier）**（能力逐级递增）组织，并由 **scope** 把关。CLI 命令即工具名把下划线
-替换为连字符（例如 `search_items` → `search-items`）。
+20 个工具按能力从低到高分层，每个都由一个 scope 把关。CLI 命令就是把工具名里的下划线换成连字符
+（`search_items` 写成 `search-items`）。
 
 <details open>
-<summary><b>Tier 0–1 · 读取</b> —— 公开、匿名浏览</summary>
+<summary><b>Tier 0–1 · 读取</b>：公开、匿名浏览</summary>
 
 | 工具 | Scope | 说明 |
 |---|---|---|
-| `ping` | `items:read` | 连通性检查；返回 `pong` + 后端健康状态 |
+| `ping` | `items:read` | 连通性检查；返回 `pong` 和后端健康状态 |
 | `search_items` | `items:read` | 关键词／分类／价格区间搜索（含 `trust_score`） |
 | `get_item` | `items:read` | 商品完整详情，含卖家信息与结构化属性 |
 | `list_categories` | `items:read` | 列出所有市场分类 |
@@ -209,39 +203,38 @@ opensell pay-order --order-id 7
 
 ## 🔐 鉴权与权限范围
 
-`items:read` 下的读取操作——`ping`、`search-items`、`get-item`、`list-categories`——是**公开可访问**的：
-无 token、甚至无效／过期 token 时也会返回数据（token 被直接忽略）。其余操作都需要带有对应 scope 的
-有效智能体 token。
+`items:read` 下的读取（`ping`、`search-items`、`get-item`、`list-categories`）是公开的。无 token、或
+token 过期都能拿到数据，这几个接口会忽略 token。其余操作都需要带对应 scope 的有效智能体 token。
 
-通过 `--token` 或 `AIXIANYU_AGENT_TOKEN` 传入 token。scope 错误是明确的：
+用 `--token` 或 `AIXIANYU_AGENT_TOKEN` 传 token。scope 错误很明确：
 
-- token 无效／过期／缺失 → 退出码 **2**（`UNAUTHORIZED`）
-- token 有效但缺少所需 scope → 退出码 **3**（`INSUFFICIENT_SCOPE`）
-- token 有效但资源不属于你 → 退出码 **9**（`FORBIDDEN`）
+- token 无效、过期或缺失 → 退出码 **2**（`UNAUTHORIZED`）
+- token 有效但 scope 不对 → 退出码 **3**（`INSUFFICIENT_SCOPE`）
+- token 有效，但资源是别人的 → 退出码 **9**（`FORBIDDEN`）
 
 ---
 
 ## 🧾 退出码
 
-成功时向 **stdout** 输出 JSON 负载；失败时向 **stderr** 输出 `{"error","message"}`。
-退出码按错误类别保持稳定：
+成功时把 JSON 负载打到 **stdout**；失败时把 `{"error","message"}` 打到 **stderr**，并按错误类别返回
+固定退出码：
 
 | 退出码 | 含义 | 来源 |
 |---|---|---|
 | 0 | 成功 | — |
-| 1 | `INVALID_ARGS` —— 服务器拒绝了参数 | 后端 422 |
-| 2 | `UNAUTHORIZED` —— 智能体 token 无效或过期 | 后端 401 |
-| 3 | `INSUFFICIENT_SCOPE` —— token 缺少所需 scope | 后端 403 |
-| 4 | `AGENT_SANDBOX_LIMIT` —— 超出单笔／余额限额 | 后端 403 |
-| 5 | `INSUFFICIENT_BALANCE` —— 余额不足 | 后端 |
-| 6 | `RATE_LIMITED` —— 触发限流 | 后端 429 |
+| 1 | `INVALID_ARGS`：服务器拒绝了参数 | 后端 422 |
+| 2 | `UNAUTHORIZED`：智能体 token 无效或过期 | 后端 401 |
+| 3 | `INSUFFICIENT_SCOPE`：token 缺少所需 scope | 后端 403 |
+| 4 | `AGENT_SANDBOX_LIMIT`：超出单笔／余额限额 | 后端 403 |
+| 5 | `INSUFFICIENT_BALANCE`：余额不足 | 后端 |
+| 6 | `RATE_LIMITED`：触发限流 | 后端 429 |
 | 7 | `*_NOT_FOUND`（商品／订单／会话不存在） | 后端 404 |
-| 8 | `SERVER_ERROR` —— 后端 5xx 或网络／传输失败 | 后端／客户端 |
-| 9 | `FORBIDDEN` —— 已认证但无权限 | 后端 403 |
-| 64 | CLI 用法错误 —— 参数错误／缺失／未知（`EX_USAGE`） | 参数解析器 |
+| 8 | `SERVER_ERROR`：后端 5xx 或网络／传输失败 | 后端／客户端 |
+| 9 | `FORBIDDEN`：已认证但无权限 | 后端 403 |
+| 64 | CLI 用法错误：参数错误／缺失／未知（`EX_USAGE`） | 参数解析器 |
 
-用法错误是 **64**，绝不是 **2**，因此调用方总能区分"我调错了"与"鉴权失败"。负数数值
-（`--min-price -50`、`--limit -1`）会被当作取值接受并交由后端校验，而非被当成未知参数拒绝。
+用法错误返回 **64** 而不是 **2**，这样调用方能区分"我调错了"和"鉴权失败"。负数（`--min-price -50`、
+`--limit -1`）会被当成取值交给后端校验，不会被当作未知参数拒绝。
 
 ---
 
@@ -254,8 +247,8 @@ opensell pay-order --order-id 7
 
 ## 💸 支付与结算
 
-订单在 **Arc** 链上以 **USDC**（`usdc_arc`）结算。支付与提现类工具运行在智能体**沙箱**内：在任何资金
-转移之前，后端会强制执行单笔、余额与每日消费限额，因此自主智能体只能在你设定的边界内交易。
+订单在 Arc 链上以 USDC（`usdc_arc`）结算。后端在动钱之前先核对单笔、余额、每日消费限额，所以智能体
+只能在你设定的额度内花钱。
 
 ---
 
@@ -263,11 +256,11 @@ opensell pay-order --order-id 7
 
 ```bash
 cargo build --workspace        # 构建全部三个 crate
-cargo test  --workspace        # 单元 + 集成测试（离线；使用 wiremock + assert_cmd）
+cargo test  --workspace        # 单元 + 集成测试（离线；用 wiremock + assert_cmd）
 cargo run -p opensell-cli -- catalog    # 从源码运行 CLI
 ```
 
-**发布**（crate 必须按依赖顺序发布）：
+**发布**（crate 按依赖顺序发）：
 
 ```bash
 cargo publish -p opensell-core
@@ -275,8 +268,8 @@ cargo publish -p opensell-cli
 cargo publish -p opensell-mcp
 ```
 
-与原始 Python 参考实现的一致性（命令清单、退出码、REST 映射、handler 语义）记录在
-[`PARITY.md`](./PARITY.md) 中。
+[`PARITY.md`](./PARITY.md) 记录了这个 Rust 版本和原始 Python 实现怎么对齐：命令清单、退出码、
+REST 映射、handler 行为。
 
 ---
 
