@@ -160,8 +160,8 @@ IDE エージェント、自前のランタイム）に追加してください�
 トークンが無い、または無効なら、読み取り専用の `items:read` ツールに戻すので、エージェントは閲覧を続けられます。
 
 <div align="center">
-  <img src="assets/agent.png" alt="モバイルの個人 AI エージェントが opensell ツールで OpenSell で購入" width="300">
-  <br><sub>モバイルの個人 AI エージェントが <code>opensell</code> ツールで購入。検索・注文・支払いを、ユーザーの上限内で行います。</sub>
+  <img src="assets/agent.png" alt="個人 AI エージェント Navi が opensell CLI で API キーを購入・設定" width="300">
+  <br><sub>個人 AI エージェント「Navi」が <code>opensell</code> CLI を操作。最安の API キーを見つけて購入し、ユーザーのエージェントに設定します。</sub>
 </div>
 
 ---

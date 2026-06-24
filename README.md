@@ -161,8 +161,8 @@ call. Without a token, or with a bad one, it falls back to the read-only `items:
 agent can still browse.
 
 <div align="center">
-  <img src="assets/agent.png" alt="A personal AI agent on mobile buying on OpenSell through the opensell tools" width="300">
-  <br><sub>A personal AI agent buying through the <code>opensell</code> tools: search, order, and pay, inside the user's spend cap.</sub>
+  <img src="assets/agent.png" alt="Navi, a personal AI agent, using the opensell CLI to buy and configure an API key" width="300">
+  <br><sub>Navi, a personal AI agent, driving the <code>opensell</code> CLI: find the cheapest API key, buy it, and wire it into the user's agent.</sub>
 </div>
 
 ---

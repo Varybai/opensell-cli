@@ -154,8 +154,8 @@ IDE 智能体、你自己的运行时）：
 回退到只读的 `items:read` 工具，智能体仍然能浏览。
 
 <div align="center">
-  <img src="assets/agent.png" alt="移动端个人 AI 智能体通过 opensell 工具在 OpenSell 上购买" width="300">
-  <br><sub>移动端的个人 AI 智能体，用 <code>opensell</code> 工具完成购买：搜索、下单、付款，全程不超出用户设定的额度。</sub>
+  <img src="assets/agent.png" alt="个人 AI 智能体 Navi 用 opensell CLI 购买并配置 API key" width="300">
+  <br><sub>个人 AI 智能体 Navi 驱动 <code>opensell</code> CLI：找到最便宜的 API key、下单购买，并自动配置进用户的智能体。</sub>
 </div>
 
 ---

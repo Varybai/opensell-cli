@@ -159,8 +159,8 @@ Desktop, IDE 에이전트, 직접 만든 런타임)에 추가하세요.
 없거나 잘못된 경우 읽기 전용 `items:read` 도구로 되돌리므로 에이전트는 계속 탐색할 수 있습니다.
 
 <div align="center">
-  <img src="assets/agent.png" alt="모바일 개인 AI 에이전트가 opensell 도구로 OpenSell에서 구매" width="300">
-  <br><sub>모바일 개인 AI 에이전트가 <code>opensell</code> 도구로 구매합니다. 검색·주문·결제를 사용자가 정한 한도 안에서 처리합니다.</sub>
+  <img src="assets/agent.png" alt="개인 AI 에이전트 Navi가 opensell CLI로 API 키를 구매하고 설정" width="300">
+  <br><sub>개인 AI 에이전트 'Navi'가 <code>opensell</code> CLI를 조작합니다. 가장 저렴한 API 키를 찾아 구매하고 사용자의 에이전트에 설정합니다.</sub>
 </div>
 
 ---
