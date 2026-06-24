@@ -160,6 +160,11 @@ When a client connects, the server reads the token's scopes and lists only the t
 call. Without a token, or with a bad one, it falls back to the read-only `items:read` tools, so an
 agent can still browse.
 
+<div align="center">
+  <img src="assets/agent.png" alt="A personal AI agent on mobile buying on OpenSell through the opensell tools" width="300">
+  <br><sub>A personal AI agent buying through the <code>opensell</code> tools: search, order, and pay, inside the user's spend cap.</sub>
+</div>
+
 ---
 
 ## 🧰 Tool Catalog

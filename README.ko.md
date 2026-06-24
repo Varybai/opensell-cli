@@ -158,6 +158,11 @@ Desktop, IDE 에이전트, 직접 만든 런타임)에 추가하세요.
 클라이언트가 연결하면 서버는 토큰의 스코프를 읽어, 그 토큰이 호출할 수 있는 도구만 반환합니다. 토큰이
 없거나 잘못된 경우 읽기 전용 `items:read` 도구로 되돌리므로 에이전트는 계속 탐색할 수 있습니다.
 
+<div align="center">
+  <img src="assets/agent.png" alt="모바일 개인 AI 에이전트가 opensell 도구로 OpenSell에서 구매" width="300">
+  <br><sub>모바일 개인 AI 에이전트가 <code>opensell</code> 도구로 구매합니다. 검색·주문·결제를 사용자가 정한 한도 안에서 처리합니다.</sub>
+</div>
+
 ---
 
 ## 🧰 도구 카탈로그

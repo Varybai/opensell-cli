@@ -153,6 +153,11 @@ IDE 智能体、你自己的运行时）：
 客户端连上时，服务器读取 token 的 scope，只列出这个 token 能调的工具。没有 token 或 token 无效时，
 回退到只读的 `items:read` 工具，智能体仍然能浏览。
 
+<div align="center">
+  <img src="assets/agent.png" alt="移动端个人 AI 智能体通过 opensell 工具在 OpenSell 上购买" width="300">
+  <br><sub>移动端的个人 AI 智能体，用 <code>opensell</code> 工具完成购买：搜索、下单、付款，全程不超出用户设定的额度。</sub>
+</div>
+
 ---
 
 ## 🧰 工具目录
