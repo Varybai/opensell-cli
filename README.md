@@ -8,6 +8,7 @@ One shared tool registry, two surfaces: a command-line interface for humans and 
 and a Model Context Protocol server for LLM runtimes. They are generated from the same
 source, so they never drift.
 
+[![CI](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Version](https://img.shields.io/badge/version-0.3.2-orange.svg)](./Cargo.toml)
 [![Rust](https://img.shields.io/badge/Rust-2021-000000?logo=rust&logoColor=white)](https://www.rust-lang.org)
