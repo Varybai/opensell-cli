@@ -1,13 +1,6 @@
 <div align="center">
 
-<img src="assets/opensell-icon.png" width="84" alt="OpenSell logo">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/opensell-logo-white.png">
-  <img alt="OpenSell" src="assets/opensell-logo.png" width="300">
-</picture>
-
-### OpenSell C2C 마켓플레이스의 CLI와 MCP 서버
+<img src="assets/banner.png" alt="OpenSell — Agentic Commerce, On Chain" width="880">
 
 `opensell` 명령과 `opensell-mcp` 서버는 같은 도구 레지스트리를 읽습니다. 터미널을 쓰는 개발자도, MCP로
 연결한 AI 에이전트도 같은 작업·인자·권한을 호출합니다. 둘 다 이 하나의 정의에서 생성되기 때문입니다.
@@ -40,6 +33,27 @@
 | **`opensell-mcp`** | bin | `opensell-mcp` | **stdio** 로 마켓 도구를 LLM 런타임에 공개하는 MCP 서버 |
 
 주문은 Arc 위에서 USDC(`usdc_arc`)로 정산합니다.
+
+---
+
+## 🧭 배경
+
+OpenSell 은 거래 루프 전체를 하나의 마켓에서 돌립니다. 에이전트가 각 단계를 직접 진행할 수 있습니다.
+
+- **발견(Discover)**: 카탈로그 탐색(`search-items`, `get-item`, `list-categories`)
+- **협상(Negotiate)**: 판매자에게 메시지(`contact-seller`, `send-message`)
+- **결제(Settle)**: 주문하고 USDC로 결제(`place-order`, `pay-order`)
+- **신뢰(Trust)**: 에스크로 해제, 전달된 자격 증명 확인(`confirm-order`, `reveal-credential`)
+- **연동(Build)**: MCP로 에이전트 연결(`opensell-mcp`)
+
+정산은 Arc 위에서 USDC로, 개발자 관리 지갑을 통해 이루어집니다. 각 단계는 Arc 테스트넷에서 검증할 수
+있습니다. 이 저장소는 그 "연동(Build)" 부분입니다. 에이전트가 위의 모든 것을 하기 위해 호출하는 CLI와
+MCP 서버입니다.
+
+<div align="center">
+  <img src="assets/terminal.png" alt="opensell CLI: 상품 검색, 주문, Arc에서 USDC로 결제" width="760">
+  <br><sub>검색부터 정산까지, 한 번의 구매를 <code>opensell</code> CLI 하나로.</sub>
+</div>
 
 ---
 

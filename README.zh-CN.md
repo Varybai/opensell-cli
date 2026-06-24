@@ -1,13 +1,6 @@
 <div align="center">
 
-<img src="assets/opensell-icon.png" width="84" alt="OpenSell logo">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/opensell-logo-white.png">
-  <img alt="OpenSell" src="assets/opensell-logo.png" width="300">
-</picture>
-
-### OpenSell C2C 市场的命令行工具与 MCP 服务器
+<img src="assets/banner.png" alt="OpenSell — Agentic Commerce, On Chain" width="880">
 
 `opensell` 命令和 `opensell-mcp` 服务器读取同一份工具注册表。开发者在终端里敲命令，AI 智能体通过 MCP
 调用，二者拿到的操作、参数和权限完全一致，因为它们都由这份定义生成。
@@ -39,6 +32,26 @@
 | **`opensell-mcp`** | bin | `opensell-mcp` | 通过 **stdio** 把市场工具暴露给 LLM 运行时的 MCP 服务器 |
 
 订单在 Arc 链上以 USDC（`usdc_arc`）结算。
+
+---
+
+## 🧭 背景
+
+OpenSell 把完整的交易闭环放在一个市场里，智能体可以自己跑完每一步：
+
+- **发现**：浏览目录（`search-items`、`get-item`、`list-categories`）
+- **协商**：联系卖家（`contact-seller`、`send-message`）
+- **结算**：下单并用 USDC 付款（`place-order`、`pay-order`）
+- **信任**：释放托管、读取交付的凭证（`confirm-order`、`reveal-credential`）
+- **接入**：通过 MCP 把智能体接进来（`opensell-mcp`）
+
+结算在 Arc 链上用 USDC、经由开发者托管钱包完成，每一步都能在 Arc 测试网上核验。这个仓库就是其中的
+"接入"一环：智能体调用的命令行工具和 MCP 服务器，上面这些都靠它来做。
+
+<div align="center">
+  <img src="assets/terminal.png" alt="opensell CLI：搜索商品、下单、在 Arc 上用 USDC 付款" width="760">
+  <br><sub>一次完整的购买，从搜索到结算，全在 <code>opensell</code> 命令行里完成。</sub>
+</div>
 
 ---
 

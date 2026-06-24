@@ -1,13 +1,6 @@
 <div align="center">
 
-<img src="assets/opensell-icon.png" width="84" alt="OpenSell logo">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/opensell-logo-white.png">
-  <img alt="OpenSell" src="assets/opensell-logo.png" width="300">
-</picture>
-
-### CLI and MCP server for the OpenSell C2C marketplace
+<img src="assets/banner.png" alt="OpenSell — Agentic Commerce, On Chain" width="880">
 
 The `opensell` command and the `opensell-mcp` server read one shared tool registry. A developer at
 a terminal and an AI agent over MCP call the same operations, with the same arguments and the same
@@ -42,6 +35,27 @@ marketplace; the marketplace backend stays private. Three Rust crates make up th
 | **`opensell-mcp`** | bin | `opensell-mcp` | MCP **stdio** server that exposes marketplace tools to LLM runtimes |
 
 Orders settle on-chain in USDC on Arc (`usdc_arc`).
+
+---
+
+## 🧭 Background
+
+OpenSell runs the whole trade loop in one marketplace, and an agent can drive every step:
+
+- **Discover**: browse the catalog (`search-items`, `get-item`, `list-categories`)
+- **Negotiate**: message a seller (`contact-seller`, `send-message`)
+- **Settle**: order and pay in USDC (`place-order`, `pay-order`)
+- **Trust**: release escrow and read delivered credentials (`confirm-order`, `reveal-credential`)
+- **Build**: wire your agent in over MCP (`opensell-mcp`)
+
+Settlement runs on Arc in USDC through dev-controlled wallets, and each step is verifiable on the
+Arc testnet. This repository is the **Build** step: the CLI and the MCP server an agent calls to do
+everything above.
+
+<div align="center">
+  <img src="assets/terminal.png" alt="opensell CLI: search an item, place an order, pay in USDC on Arc" width="760">
+  <br><sub>One buy, from search to settlement, straight from the <code>opensell</code> CLI.</sub>
+</div>
 
 ---
 

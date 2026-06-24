@@ -1,13 +1,6 @@
 <div align="center">
 
-<img src="assets/opensell-icon.png" width="84" alt="OpenSell logo">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/opensell-logo-white.png">
-  <img alt="OpenSell" src="assets/opensell-logo.png" width="300">
-</picture>
-
-### OpenSell C2C マーケットプレイスの CLI と MCP サーバー
+<img src="assets/banner.png" alt="OpenSell — Agentic Commerce, On Chain" width="880">
 
 `opensell` コマンドと `opensell-mcp` サーバーは、同じツールレジストリを読み込みます。ターミナルを使う
 開発者も、MCP 経由の AI エージェントも、同じ操作・引数・権限を呼び出します。どちらもこの 1 つの定義から
@@ -41,6 +34,27 @@
 | **`opensell-mcp`** | bin | `opensell-mcp` | **stdio** でマーケットのツールを LLM ランタイムに公開する MCP サーバー |
 
 注文は Arc 上で USDC（`usdc_arc`）として決済します。
+
+---
+
+## 🧭 背景
+
+OpenSell は取引のループ全体を 1 つのマーケットで回します。エージェントは各ステップを自分で進められます。
+
+- **発見（Discover）**：カタログを閲覧（`search-items`、`get-item`、`list-categories`）
+- **交渉（Negotiate）**：出品者にメッセージ（`contact-seller`、`send-message`）
+- **決済（Settle）**：注文して USDC で支払い（`place-order`、`pay-order`）
+- **信頼（Trust）**：エスクローを解放し、受け取ったクレデンシャルを読む（`confirm-order`、`reveal-credential`）
+- **接続（Build）**：MCP でエージェントをつなぐ（`opensell-mcp`）
+
+決済は Arc 上で USDC を使い、開発者管理ウォレットで行われます。各ステップは Arc テストネットで検証できます。
+このリポジトリはその「接続（Build）」の部分です。エージェントが上記すべてを行うために呼び出す CLI と
+MCP サーバーです。
+
+<div align="center">
+  <img src="assets/terminal.png" alt="opensell CLI：商品を検索し、注文し、Arc 上で USDC で支払う" width="760">
+  <br><sub>検索から決済まで、1 回の購入を <code>opensell</code> CLI だけで。</sub>
+</div>
 
 ---
 
