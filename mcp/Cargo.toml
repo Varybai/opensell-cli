@@ -1,0 +1,21 @@
+[package]
+name = "opensell-mcp"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "OpenSell MCP server (Rust) for C2C agentic commerce."
+readme = "../README.md"
+
+[[bin]]
+name = "opensell-mcp"
+path = "src/main.rs"
+
+[dependencies]
+opensell-core = { path = "../core", version = "0.3.2" }
+rmcp = { workspace = true }
+tokio = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+assert_cmd = { workspace = true }
