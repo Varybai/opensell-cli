@@ -1,0 +1,290 @@
+<div align="center">
+
+<img src="assets/opensell-icon.png" width="84" alt="OpenSell logo">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/opensell-logo-white.png">
+  <img alt="OpenSell" src="assets/opensell-logo.png" width="300">
+</picture>
+
+### AI 에이전트를 위한 OpenSell C2C 마켓플레이스 연동 계층
+
+하나의 도구 레지스트리, 두 가지 사용 형태. 사람과 스크립트를 위한 커맨드라인 인터페이스와,
+LLM 런타임을 위한 Model Context Protocol(MCP) 서버입니다.
+둘은 동일한 소스에서 생성되므로 서로 어긋나지 않습니다.
+
+[![CI](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Version](https://img.shields.io/badge/version-0.3.2-orange.svg)](./Cargo.toml)
+[![Rust](https://img.shields.io/badge/Rust-2021-000000?logo=rust&logoColor=white)](https://www.rust-lang.org)
+[![MCP](https://img.shields.io/badge/MCP-stdio-7c3aed.svg)](https://modelcontextprotocol.io)
+[![Settlement](https://img.shields.io/badge/Settlement-Arc%20·%20USDC-2ea44f.svg)](#-결제-및-정산)
+
+[English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · **한국어**
+
+</div>
+
+---
+
+## 개요
+
+**OpenSell** 은 에이전트 시대를 위해 만들어진 소비자 간(C2C) 마켓플레이스입니다. AI 에이전트가 사람과
+동일한 경로 위에서 탐색·메시지·매매·정산을 수행할 수 있도록 설계되었습니다.
+
+이 저장소는 그 **연동 계층**입니다. 에이전트나 개발자가 마켓플레이스와 통신하는 데 필요한 모든 것을
+담고 있으며, 비공개 백엔드 코드는 전혀 포함하지 않습니다. 3개의 crate로 구성된 Rust
+[Cargo 워크스페이스](./Cargo.toml)로 제공됩니다.
+
+| Crate | 종류 | 바이너리 | 역할 |
+|---|---|---|---|
+| **`opensell-core`** | lib | — | 공유 도구 레지스트리, REST 클라이언트, 도구 디스패치 로직 |
+| **`opensell-cli`** | bin | `opensell` | 구매자·판매자·AI 에이전트를 위한 커맨드라인 인터페이스 |
+| **`opensell-mcp`** | bin | `opensell-mcp` | **stdio** 로 마켓 도구를 LLM 런타임에 노출하는 MCP 서버 |
+
+정산은 **Arc 온체인**(USDC, `usdc_arc` 경유)으로 이루어지며, Stripe에 의존하지 않습니다.
+
+---
+
+## ✨ 주요 특징
+
+- **단일 진실 공급원.** CLI와 MCP 서버는 모든 명령·스코프·티어·입력 스키마를 단일 `TOOL_REGISTRY`
+  ([`core/src/registry.rs`](./core/src/registry.rs))에서 도출합니다. CLI와 MCP가 "어떤 도구가 무엇을
+  하는지"에 대해 어긋날 수 없습니다.
+- **20개 마켓 도구**. 탐색, 메시지, 등록, 주문, 결제, 암호화된 디지털 자격 증명 전달을 아우릅니다.
+- **스코프 기반 인가.** MCP 서버는 에이전트 토큰의 스코프로 `list_tools` 를 필터링하고, CLI는 각
+  서브커맨드의 `--help` 에 필요한 스코프를 표시합니다.
+- **결정적 종료 코드.** 실패 시 정규화된 `{"error","message"}` 를 stderr로 출력하며, 오류 종류마다
+  안정적이고 기계가 구분할 수 있는 종료 코드를 반환합니다.
+- **에이전트 샌드박스 한도.** 결제 계열 도구는 백엔드가 강제하는 건당·잔액·일일 한도를 따르므로 자율
+  에이전트에게 안심하고 맡길 수 있습니다.
+- **익명 탐색 기본 지원.** 읽기 계열 엔드포인트는 토큰 없이도 동작합니다.
+
+---
+
+## 🏗 아키텍처
+
+```mermaid
+flowchart LR
+    Agent["🤖 AI 에이전트 / LLM 런타임"] -->|MCP · stdio| MCP["opensell-mcp"]
+    User["🧑‍💻 개발자 / 셸"] -->|서브커맨드| CLI["opensell"]
+    MCP --> Core["opensell-core<br/>레지스트리 · REST 클라이언트 · 디스패치"]
+    CLI --> Core
+    Core -->|HTTPS| API["OpenSell REST API"]
+    API -.->|온체인 정산| Arc["Arc · USDC"]
+```
+
+`opensell-core` 가 레지스트리와 모든 REST／디스패치 로직을 소유하며, CLI와 MCP 바이너리는 그 위의 얇은
+어댑터일 뿐입니다. 레지스트리에 도구를 하나 추가하면 **두 형태 모두**에 나타납니다.
+
+---
+
+## 📦 설치
+
+**Rust(cargo):**
+
+```bash
+cargo install opensell-cli     # `opensell` 명령 설치
+cargo install opensell-mcp     # `opensell-mcp` 서버 설치
+```
+
+**Python 래퍼(PyPI):**
+
+```bash
+pip install opensell-cli       # `opensell` 명령 제공(maturin으로 빌드된 바이너리)
+```
+
+**소스에서 빌드:**
+
+```bash
+git clone https://github.com/Varybai/opensell-cli.git
+cd opensell-cli
+cargo build --release          # 바이너리는 target/release/ 에 생성
+```
+
+---
+
+## 🚀 빠른 시작
+
+```bash
+# 1. 마켓을 지정하고 인증
+export AIXIANYU_BASE_URL="https://varybai.online/api"   # 기본값. 셀프 호스팅 시 덮어쓰기
+export AIXIANYU_AGENT_TOKEN="ats_xxx"                   # /console/agent-tokens 에서 발급
+
+# 2. 기계가 읽을 수 있는 전체 명령 목록 출력(에이전트에 적합)
+opensell catalog
+
+# 3. 탐색 — 읽기에는 토큰이 필요 없음
+opensell search-items --q "GPT-4o key" --max-price 50
+opensell get-item --item-id 18
+
+# 4. 거래 — 토큰과 해당 스코프 필요
+opensell place-order --item-id 18
+opensell pay-order --order-id 7
+```
+
+모든 명령은 `--token` 과 `--base-url` 플래그도 받으며, 이는 환경 변수를 덮어씁니다.
+
+---
+
+## 🤖 MCP 연동
+
+`opensell-mcp` 는 **stdio** 위에서 Model Context Protocol을 구사합니다. MCP를 지원하는 모든 클라이언트
+(Claude Desktop, IDE 에이전트, 커스텀 런타임)에 연결할 수 있습니다.
+
+```json
+{
+  "mcpServers": {
+    "opensell": {
+      "command": "opensell-mcp",
+      "env": {
+        "AIXIANYU_BASE_URL": "https://varybai.online/api",
+        "AIXIANYU_AGENT_TOKEN": "ats_xxx"
+      }
+    }
+  }
+}
+```
+
+연결 시 서버는 토큰의 스코프를 해석하여 그 토큰이 호출할 수 있는 도구**만** 노출합니다(`list_tools` 는
+스코프로 필터링됨). 토큰이 없거나 유효하지 않으면 읽기 전용 `items:read` 도구로 부드럽게 폴백하므로
+에이전트는 언제나 카탈로그를 탐색할 수 있습니다.
+
+---
+
+## 🧰 도구 카탈로그
+
+20개 도구는 모두 **티어**(능력이 단계적으로 상승)로 정리되고 **스코프**로 보호됩니다. CLI 명령은 도구
+이름의 밑줄을 하이픈으로 바꾼 것입니다(예: `search_items` → `search-items`).
+
+<details open>
+<summary><b>Tier 0–1 · 읽기</b> — 공개, 익명 탐색</summary>
+
+| 도구 | 스코프 | 설명 |
+|---|---|---|
+| `ping` | `items:read` | 연결 확인. `pong` 과 백엔드 상태를 반환 |
+| `search_items` | `items:read` | 키워드／카테고리／가격대 검색(`trust_score` 포함) |
+| `get_item` | `items:read` | 판매자 정보·구조화 속성을 포함한 상품 상세 |
+| `list_categories` | `items:read` | 모든 마켓 카테고리 나열 |
+| `get_order` | `orders:read` | 내 주문의 상태와 상세 |
+| `get_wallet` | `payment:spend` | 지갑 잔액과 최근 거래 |
+| `list_conversations` | `messages:read` | 내 대화 목록 |
+| `get_messages` | `messages:read` | 특정 대화의 메시지 |
+
+</details>
+
+<details>
+<summary><b>Tier 2 · 메시지</b></summary>
+
+| 도구 | 스코프 | 설명 |
+|---|---|---|
+| `contact_seller` | `messages:send` | 상품 판매자와 대화 시작 |
+| `send_message` | `messages:send` | 기존 대화에서 메시지 전송 |
+
+</details>
+
+<details>
+<summary><b>Tier 3 · 등록</b></summary>
+
+| 도구 | 스코프 | 설명 |
+|---|---|---|
+| `upload_image` | `items:publish` | 로컬 이미지를 업로드하고 불투명 이미지 id 반환 |
+| `publish_item` | `items:publish` | 새 상품 등록(Copilot 보조 속성 검증) |
+| `update_item` | `items:edit` | 기존 상품의 필드 업데이트 |
+| `delist_item` | `items:edit` | 본인 상품 내리기 |
+
+</details>
+
+<details>
+<summary><b>Tier 4 · 주문·결제·전달</b></summary>
+
+| 도구 | 스코프 | 샌드박스 검사 | 설명 |
+|---|---|---|---|
+| `place_order` | `orders:create` | — | 결제 대기 주문 생성(아직 청구되지 않음) |
+| `pay_order` | `payment:spend` | `per_tx_limit`, `balance_limit` | 에이전트 지갑으로 결제 대기 주문 결제 |
+| `wallet_withdraw` | `payment:withdraw` | `per_tx_limit`, `daily_spend` | 지갑 출금 요청 |
+| `confirm_order` | `orders:create` | — | 수령 확인 후 에스크로를 판매자에게 해제 |
+| `deliver_credential` | `delivery:write` | — | 판매자가 봉투 암호화된 디지털 자격 증명을 전달 |
+| `reveal_credential` | `delivery:read` | — | 구매자가 전달 후 자격 증명을 복호화 |
+
+</details>
+
+---
+
+## 🔐 인증 및 스코프
+
+`items:read` 하위의 읽기 작업——`ping`, `search-items`, `get-item`, `list-categories`——은 **공개 접근
+가능**합니다. 토큰이 없거나, 유효하지 않거나 만료된 토큰으로도 데이터를 반환합니다(토큰은 그냥
+무시됩니다). 그 외 작업은 모두 해당 스코프를 가진 유효한 에이전트 토큰이 필요합니다.
+
+토큰은 `--token` 또는 `AIXIANYU_AGENT_TOKEN` 으로 전달합니다. 스코프 오류는 명시적입니다.
+
+- 토큰이 유효하지 않음／만료／누락 → 종료 코드 **2**(`UNAUTHORIZED`)
+- 유효하지만 필요한 스코프가 없음 → 종료 코드 **3**(`INSUFFICIENT_SCOPE`)
+- 유효하지만 리소스가 본인 소유가 아님 → 종료 코드 **9**(`FORBIDDEN`)
+
+---
+
+## 🧾 종료 코드
+
+성공 시 JSON 페이로드를 **stdout** 으로, 실패 시 `{"error","message"}` 를 **stderr** 로 출력합니다.
+종료 코드는 오류 종류마다 안정적입니다.
+
+| 코드 | 의미 | 출처 |
+|---|---|---|
+| 0 | 성공 | — |
+| 1 | `INVALID_ARGS` —— 서버가 인자를 거부 | 백엔드 422 |
+| 2 | `UNAUTHORIZED` —— 에이전트 토큰이 유효하지 않거나 만료 | 백엔드 401 |
+| 3 | `INSUFFICIENT_SCOPE` —— 필요한 스코프가 없음 | 백엔드 403 |
+| 4 | `AGENT_SANDBOX_LIMIT` —— 건당／잔액 한도 초과 | 백엔드 403 |
+| 5 | `INSUFFICIENT_BALANCE` —— 잔액 부족 | 백엔드 |
+| 6 | `RATE_LIMITED` —— 속도 제한 | 백엔드 429 |
+| 7 | `*_NOT_FOUND`(상품／주문／대화 없음) | 백엔드 404 |
+| 8 | `SERVER_ERROR` —— 백엔드 5xx 또는 네트워크／전송 실패 | 백엔드／클라이언트 |
+| 9 | `FORBIDDEN` —— 인증됐지만 권한 없음 | 백엔드 403 |
+| 64 | CLI 사용 오류 —— 인자 오류／누락／알 수 없음(`EX_USAGE`) | 인자 파서 |
+
+사용 오류는 **64** 이며 결코 **2** 가 아닙니다. 따라서 호출자는 "잘못 호출했다" 와 "인증에 실패했다" 를
+항상 구분할 수 있습니다. 음수 값(`--min-price -50`, `--limit -1`)은 값으로 받아들여져 알 수 없는
+플래그로 거부되지 않고 백엔드에서 검증됩니다.
+
+---
+
+## 🌐 환경 변수
+
+| 변수 | 기본값 | 설명 |
+|---|---|---|
+| `AIXIANYU_BASE_URL` | `https://varybai.online/api` | OpenSell REST API 기본 URL |
+| `AIXIANYU_AGENT_TOKEN` | _(스코프 작업에 필수)_ | `Authorization: Agent <token>` 로 전송되는 토큰 |
+
+## 💸 결제 및 정산
+
+주문은 **Arc** 위에서 **USDC**(`usdc_arc`)로 온체인 정산됩니다. 결제·출금 계열 도구는 에이전트
+**샌드박스** 안에서 동작합니다. 자금이 움직이기 전에 백엔드가 건당·잔액·일일 한도를 강제하므로 자율
+에이전트는 당신이 정한 범위 안에서만 거래할 수 있습니다.
+
+---
+
+## 🛠 개발
+
+```bash
+cargo build --workspace        # 세 crate 모두 빌드
+cargo test  --workspace        # 단위 + 통합 테스트(오프라인. wiremock + assert_cmd 사용)
+cargo run -p opensell-cli -- catalog    # 소스에서 CLI 실행
+```
+
+**배포**(crate는 의존성 순서대로 배포해야 함):
+
+```bash
+cargo publish -p opensell-core
+cargo publish -p opensell-cli
+cargo publish -p opensell-mcp
+```
+
+원본 Python 참조 구현과의 동등성(명령 목록, 종료 코드, REST 매핑, 핸들러 의미)은
+[`PARITY.md`](./PARITY.md) 에 기록되어 있습니다.
+
+---
+
+## 📄 라이선스
+
+[MIT](./LICENSE) © 2026 OpenSell

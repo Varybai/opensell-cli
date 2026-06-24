@@ -1,8 +1,10 @@
 <div align="center">
 
+<img src="assets/opensell-icon.png" width="84" alt="OpenSell logo">
+
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
-  <img alt="OpenSell — CLI &amp; MCP Server" src="assets/logo-light.svg" width="360">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/opensell-logo-white.png">
+  <img alt="OpenSell" src="assets/opensell-logo.png" width="300">
 </picture>
 
 ### The agent-facing front door to the OpenSell C2C marketplace
@@ -18,7 +20,7 @@ source, so they never drift.
 [![MCP](https://img.shields.io/badge/MCP-stdio-7c3aed.svg)](https://modelcontextprotocol.io)
 [![Settlement](https://img.shields.io/badge/Settlement-Arc%20·%20USDC-2ea44f.svg)](#-payments--settlement)
 
-**English** · [简体中文](#简体中文) · [日本語](#日本語) · [한국어](#한국어)
+**English** · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md)
 
 </div>
 
@@ -283,54 +285,6 @@ cargo publish -p opensell-mcp
 
 Parity with the original Python reference implementation (catalog surface, exit codes, REST
 mapping, handler semantics) is documented in [`PARITY.md`](./PARITY.md).
-
----
-
-## 简体中文
-
-**OpenSell** 是面向 AI 智能体时代的 C2C 二手交易市场。本仓库是它的**智能体接入层**：命令行工具
-`opensell` 与 MCP 服务器 `opensell-mcp`，两者都由同一份工具注册表（`TOOL_REGISTRY`）生成，因此
-命令、权限范围与输入模式永不偏移。共 **20 个工具**，覆盖浏览、消息、上架、下单、支付与加密凭证交付。
-结算走 **Arc 链上 USDC**（`usdc_arc`），不依赖 Stripe。
-
-```bash
-cargo install opensell-cli
-export AIXIANYU_AGENT_TOKEN="ats_xxx"
-opensell catalog
-```
-
----
-
-## 日本語
-
-**OpenSell** は AI エージェント時代に向けた C2C マーケットプレイスです。本リポジトリはその
-**エージェント連携レイヤー**で、コマンドラインツール `opensell` と MCP サーバー `opensell-mcp` を
-提供します。両者は単一のツールレジストリ（`TOOL_REGISTRY`）から生成されるため、コマンド・スコープ・
-入力スキーマがずれることはありません。閲覧・メッセージ・出品・注文・決済・暗号化クレデンシャルの
-受け渡しをカバーする **20 のツール**を備え、決済は **Arc のオンチェーン USDC**（`usdc_arc`）で
-行います（Stripe には依存しません）。
-
-```bash
-cargo install opensell-cli
-export AIXIANYU_AGENT_TOKEN="ats_xxx"
-opensell catalog
-```
-
----
-
-## 한국어
-
-**OpenSell** 은 AI 에이전트 시대를 위한 C2C 마켓플레이스입니다. 이 저장소는 **에이전트 연동
-계층**으로, 커맨드라인 도구 `opensell` 와 MCP 서버 `opensell-mcp` 를 제공합니다. 둘은 동일한 도구
-레지스트리(`TOOL_REGISTRY`)에서 생성되므로 명령어·스코프·입력 스키마가 어긋나지 않습니다. 검색,
-메시지, 등록, 주문, 결제, 암호화 자격 증명 전달을 아우르는 **20개 도구**를 제공하며, 정산은 **Arc
-온체인 USDC**(`usdc_arc`)로 이루어집니다 (Stripe 미사용).
-
-```bash
-cargo install opensell-cli
-export AIXIANYU_AGENT_TOKEN="ats_xxx"
-opensell catalog
-```
 
 ---
 
