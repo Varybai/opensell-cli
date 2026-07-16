@@ -1,75 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400"
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380"
      role="img" aria-labelledby="t d" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
   <title id="t">OpenSell — agent-facing CLI and MCP server</title>
-  <desc id="d">One shared tool registry feeds two surfaces: the opensell CLI and the opensell-mcp server. A developer and an AI agent call the same 20 operations, and orders settle on-chain in USDC on Arc.</desc>
+  <desc id="d">OpenSell: agentic commerce, on chain. The opensell CLI and the opensell-mcp server are how agents plug in, both reading the same tool registry. Orders settle on-chain in USDC on Arc.</desc>
   <defs>
-    <linearGradient id="sTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1B44"/><stop offset="1" stop-color="#16297A"/></linearGradient>
+    <linearGradient id="sTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B4F9E"/><stop offset="1" stop-color="#5470D6"/></linearGradient>
     <linearGradient id="sBot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F6BFF"/><stop offset="1" stop-color="#1E5BFF"/></linearGradient>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7F9FC"/><stop offset="1" stop-color="#EDF1F8"/></linearGradient>
-    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1B44"/><stop offset="1" stop-color="#15275F"/></linearGradient>
-    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#0B1B44" flood-opacity="0.10"/></filter>
-    <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#9FB2D0"/></marker>
+    <linearGradient id="bgDark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#070911"/><stop offset="1" stop-color="#0E1730"/></linearGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#101B3E"/><stop offset="1" stop-color="#1A2A63"/></linearGradient>
+    <radialGradient id="glow" cx="50%" cy="30%" r="65%"><stop offset="0" stop-color="#2F6BFF" stop-opacity="0.20"/><stop offset="1" stop-color="#2F6BFF" stop-opacity="0"/></radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#000000" flood-opacity="0.25"/></filter>
+    <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#59678C"/></marker>
     <marker id="arwG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3FA971"/></marker>
   </defs>
-  <rect x="1" y="1" width="1198" height="398" rx="26" fill="url(#bg)" stroke="#E4EAF2" stroke-width="1.5"/>
+  <rect x="1" y="1" width="1198" height="378" rx="26" fill="url(#bgDark)" stroke="#1B2542" stroke-width="1.5"/>
+  <ellipse cx="600" cy="118" rx="520" ry="200" fill="url(#glow)"/>
 
-  <g transform="translate(64 56)">
-    <g>
-      <path d="M34 2 L61 17 L61 47 L34 62 L7 47 L7 17 Z" fill="#fff" stroke="#DCE3EF" stroke-width="2"/>
-      <path d="M45 21 a11 11 0 1 0 -11 13" fill="none" stroke="url(#sTop)" stroke-width="8" stroke-linecap="round"/>
-      <path d="M23 43 a11 11 0 1 0 11 -13" fill="none" stroke="url(#sBot)" stroke-width="8" stroke-linecap="round"/>
-    </g>
-    <text x="82" y="20" font-size="15" font-weight="600" letter-spacing="3.5" fill="#5B6B84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">AGENT-FACING CLI · MCP SERVER</text>
-    <text x="80" y="58" font-size="50" font-weight="800" letter-spacing="-1" fill="#0B1B44" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">OpenSell</text>
-
-    <text x="2" y="126" font-size="27" font-weight="600" fill="#152447">One tool registry. A terminal and an AI agent</text>
-    <text x="2" y="162" font-size="27" font-weight="600" fill="#152447">call the <tspan fill="#2F6BFF">same 20 operations</tspan>, the same way.</text>
-
-    <text x="2" y="202" font-size="16.5" fill="#5B6B84">Client side of a C2C marketplace where agents buy and sell alongside people.</text>
-
-    <g transform="translate(2 230)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13.5" font-weight="600">
-      <g><rect x="0" y="0" width="98" height="30" rx="8" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/><text x="49" y="20" text-anchor="middle" fill="#334463">Rust 2021</text></g>
-      <g transform="translate(108 0)"><rect x="0" y="0" width="110" height="30" rx="8" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/><text x="55" y="20" text-anchor="middle" fill="#334463">MCP · stdio</text></g>
-      <g transform="translate(228 0)"><rect x="0" y="0" width="130" height="30" rx="8" fill="#EAF6EF" stroke="#BFE4CE" stroke-width="1.3"/><circle cx="18" cy="15" r="4" fill="#1F9D57"/><text x="79" y="20" text-anchor="middle" fill="#186B3E">Arc · USDC</text></g>
-      <g transform="translate(368 0)"><rect x="0" y="0" width="62" height="30" rx="8" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/><text x="31" y="20" text-anchor="middle" fill="#334463">MIT</text></g>
-    </g>
+  <!-- brand lockup: hex-S + wordmark, centered -->
+  <g transform="translate(475 42)">
+    <path d="M34 2 L61 17 L61 47 L34 62 L7 47 L7 17 Z" fill="none" stroke="#3A4670" stroke-width="1.6"/>
+    <path d="M45 21 a11 11 0 1 0 -11 13" fill="none" stroke="url(#sTop)" stroke-width="7" stroke-linecap="round"/>
+    <path d="M23 43 a11 11 0 1 0 11 -13" fill="none" stroke="url(#sBot)" stroke-width="7" stroke-linecap="round"/>
+    <text x="82" y="42" font-size="28" font-weight="700" letter-spacing="4" fill="#F3F5FC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">OPENSELL</text>
   </g>
 
-  <g transform="translate(730 40)">
-    <g fill="none" stroke="#C4D1E6" stroke-width="2">
-      <path d="M205 66 L205 88"/>
-      <path d="M205 88 C205 98 90 94 90 104"/>
-      <path d="M205 88 C205 98 320 94 320 104"/>
-      <path d="M90 158 C90 180 205 176 205 196"/>
-      <path d="M320 158 C320 180 205 176 205 196"/>
-      <path d="M205 250 L205 284"/>
-    </g>
-    <g transform="translate(105 12)" filter="url(#soft)">
-      <rect x="0" y="0" width="200" height="54" rx="14" fill="#0B1B44"/>
-      <text x="20" y="24" font-size="13" font-weight="700" letter-spacing="1.8" fill="#8FB0FF" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">SHARED REGISTRY</text>
-      <text x="20" y="43" font-size="12.5" fill="#C9D6EE" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">20 tools · defined once</text>
-    </g>
-    <g transform="translate(15 104)" filter="url(#soft)">
-      <rect x="0" y="0" width="150" height="54" rx="13" fill="#0C111B"/>
-      <circle cx="16" cy="15" r="3.5" fill="#FF5F56"/><circle cx="28" cy="15" r="3.5" fill="#FFBD2E"/><circle cx="40" cy="15" r="3.5" fill="#27C93F"/>
-      <text x="16" y="43" font-size="15" font-weight="700" fill="#E6EDF3" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"><tspan fill="#3FB950">$</tspan> opensell</text>
-    </g>
-    <g transform="translate(245 104)" filter="url(#soft)">
-      <rect x="0" y="0" width="150" height="54" rx="13" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/>
-      <rect x="16" y="12" width="8" height="8" rx="2" fill="#7C3AED"/>
-      <text x="30" y="20" font-size="11.5" font-weight="600" letter-spacing="1" fill="#7C3AED" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">MCP</text>
-      <text x="16" y="43" font-size="15" font-weight="700" fill="#152447" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">opensell-mcp</text>
-    </g>
-    <g transform="translate(105 196)" filter="url(#soft)">
-      <rect x="0" y="0" width="200" height="54" rx="13" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/>
-      <text x="20" y="23" font-size="13.5" font-weight="700" fill="#152447" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">opensell-core</text>
-      <text x="20" y="42" font-size="12" fill="#5B6B84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">REST client · dispatch</text>
-    </g>
-    <g transform="translate(105 282)" filter="url(#soft)">
-      <rect x="0" y="0" width="200" height="54" rx="13" fill="#0E7A43"/>
-      <path d="M22 22 l6 6 l12 -13" fill="none" stroke="#7EEBA8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      <text x="52" y="27" font-size="14.5" font-weight="700" fill="#EAFBF1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Arc · USDC</text>
-      <text x="20" y="45" font-size="11.5" fill="#A7E9C4" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">tx 0x9f3c…a210 · settled</text>
-    </g>
+  <!-- brand tagline: kept in English across all languages, matching the existing banner.png convention -->
+  <text x="600" y="146" font-size="46" font-weight="800" letter-spacing="-0.5" fill="#EEF1FA" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Agentic Commerce,</text>
+  <text x="600" y="200" font-size="46" font-weight="800" letter-spacing="-0.5" fill="#5B8CFF" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">On Chain.</text>
+
+  <text x="600" y="240" font-size="16.5" fill="#9AA7C7" text-anchor="middle">The opensell CLI and the opensell-mcp server are how agents plug in, both reading the same registry.</text>
+
+  <!-- chips: shared brand/product labels, identical widths across languages -->
+  <g transform="translate(600 266)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="600" text-anchor="middle">
+    <g transform="translate(-306 0)"><rect x="0" y="0" width="158" height="32" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/><text x="79" y="21" fill="#DCE3F5">opensell CLI</text></g>
+    <g transform="translate(-140 0)"><rect x="0" y="0" width="158" height="32" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/><text x="79" y="21" fill="#DCE3F5">opensell-mcp</text></g>
+    <g transform="translate(26 0)"><rect x="0" y="0" width="179" height="32" rx="16" fill="#1F9D57" fill-opacity="0.16" stroke="#3FA971" stroke-opacity="0.4"/><circle cx="24" cy="16" r="4" fill="#4ADE80"/><text x="99" y="21" fill="#B7F3CE">Arc settlement</text></g>
+    <g transform="translate(213 0)"><rect x="0" y="0" width="93" height="32" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/><text x="46" y="21" fill="#DCE3F5">USDC</text></g>
   </g>
+
+  <text x="600" y="332" font-size="13" fill="#5C6788" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">tx 0x9f3c…a210 · settled on Arc</text>
 </svg>

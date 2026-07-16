@@ -3,19 +3,20 @@
   <title id="at">OpenSell architecture — one registry, two surfaces, on-chain settlement</title>
   <desc id="ad">An AI agent connects over MCP stdio and a developer runs subcommands. Both reach opensell-core, which holds the shared 20-tool registry, the REST client, and dispatch. Core calls the OpenSell REST API over HTTPS, and orders settle on-chain in USDC on Arc.</desc>
   <defs>
-    <linearGradient id="sTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1B44"/><stop offset="1" stop-color="#16297A"/></linearGradient>
+    <linearGradient id="sTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B4F9E"/><stop offset="1" stop-color="#5470D6"/></linearGradient>
     <linearGradient id="sBot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F6BFF"/><stop offset="1" stop-color="#1E5BFF"/></linearGradient>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7F9FC"/><stop offset="1" stop-color="#EDF1F8"/></linearGradient>
-    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1B44"/><stop offset="1" stop-color="#15275F"/></linearGradient>
-    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#0B1B44" flood-opacity="0.10"/></filter>
-    <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#9FB2D0"/></marker>
+    <linearGradient id="bgDark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#070911"/><stop offset="1" stop-color="#0E1730"/></linearGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#101B3E"/><stop offset="1" stop-color="#1A2A63"/></linearGradient>
+    <radialGradient id="glow" cx="50%" cy="30%" r="65%"><stop offset="0" stop-color="#2F6BFF" stop-opacity="0.20"/><stop offset="1" stop-color="#2F6BFF" stop-opacity="0"/></radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#000000" flood-opacity="0.25"/></filter>
+    <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#59678C"/></marker>
     <marker id="arwG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3FA971"/></marker>
   </defs>
-  <rect x="1" y="1" width="1198" height="438" rx="24" fill="url(#bg)" stroke="#E4EAF2" stroke-width="1.5"/>
+  <rect x="1" y="1" width="1198" height="438" rx="24" fill="url(#bgDark)" stroke="#1B2542" stroke-width="1.5"/>
 
-  <text x="48" y="52" font-size="13" font-weight="700" letter-spacing="2.5" fill="#5B6B84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">ONE REGISTRY · TWO SURFACES · ON-CHAIN SETTLEMENT</text>
+  <text x="48" y="52" font-size="13" font-weight="700" letter-spacing="2.5" fill="#8A97C2" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">ONE REGISTRY · TWO SURFACES · ON-CHAIN SETTLEMENT</text>
 
-  <g fill="none" stroke="#9FB2D0" stroke-width="2.2">
+  <g fill="none" stroke="#3D4A72" stroke-width="2.2">
     <path d="M300 150 L372 150" marker-end="url(#arw)"/>
     <path d="M300 300 L372 300" marker-end="url(#arw)"/>
     <path d="M556 150 C616 150 616 205 660 218" marker-end="url(#arw)"/>
@@ -24,7 +25,7 @@
   </g>
   <path d="M1060 268 C1060 322 640 300 640 348" fill="none" stroke="#3FA971" stroke-width="2.2" stroke-dasharray="2 7" stroke-linecap="round" marker-end="url(#arwG)"/>
 
-  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#6B7A94">
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#8A97C2">
     <text x="336" y="143" text-anchor="middle">MCP·stdio</text>
     <text x="336" y="293" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">subcmds</text>
     <text x="936" y="216" text-anchor="middle">HTTPS</text>
@@ -61,7 +62,7 @@
   <g transform="translate(660 180)" filter="url(#soft)">
     <rect x="0" y="0" width="244" height="90" rx="16" fill="url(#navy)"/>
     <text x="22" y="30" font-size="16" font-weight="800" fill="#fff" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">opensell-core</text>
-    <line x1="22" y1="42" x2="222" y2="42" stroke="#2A3B6B" stroke-width="1"/>
+    <line x1="22" y1="42" x2="222" y2="42" stroke="#33417A" stroke-width="1"/>
     <g font-size="12" fill="#C9D6EE" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
       <text x="22" y="60"><tspan fill="#8FB0FF" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">▸</tspan> registry · 20 tools</text>
       <text x="22" y="78"><tspan fill="#8FB0FF" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">▸</tspan> REST client · dispatch</text>
@@ -84,6 +85,6 @@
     <text x="60" y="46" font-size="11.5" fill="#A7E9C4" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">on-chain · usdc_arc</text>
   </g>
 
-  <text x="800" y="392" font-size="13" fill="#5B6B84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Add a tool to the registry →</text>
-  <text x="800" y="411" font-size="13" font-weight="700" fill="#2F6BFF" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">it appears in the CLI and MCP at once.</text>
+  <text x="800" y="392" font-size="13" fill="#8A97C2" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Add a tool to the registry →</text>
+  <text x="800" y="411" font-size="13" font-weight="700" fill="#6E9BFF" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">it appears in the CLI and MCP at once.</text>
 </svg>
