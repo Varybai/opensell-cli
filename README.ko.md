@@ -1,9 +1,9 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="OpenSell — Agentic Commerce, On Chain" width="880">
+<img src="assets/hero.ko.svg" alt="OpenSell — 하나의 도구 레지스트리가 opensell CLI와 opensell-mcp 서버를 구동; 주문은 Arc 위에서 USDC로 정산" width="100%">
 
-`opensell` 명령과 `opensell-mcp` 서버는 같은 도구 레지스트리를 읽습니다. 터미널을 쓰는 개발자도, MCP로
-연결한 AI 에이전트도 같은 작업·인자·권한을 호출합니다. 둘 다 이 하나의 정의에서 생성되기 때문입니다.
+**하나의 도구 레지스트리, 두 개의 창구.** `opensell` CLI와 `opensell-mcp` 서버는 같은 정의를 읽으므로,
+개발자도 AI 에이전트도 같은 작업·인자·권한을 호출합니다.
 
 [![CI](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
@@ -73,18 +73,11 @@ MCP 서버입니다.
 
 ## 🏗 아키텍처
 
-```mermaid
-flowchart LR
-    Agent["🤖 AI 에이전트 / LLM 런타임"] -->|MCP · stdio| MCP["opensell-mcp"]
-    User["🧑‍💻 개발자 / 셸"] -->|서브커맨드| CLI["opensell"]
-    MCP --> Core["opensell-core<br/>레지스트리 · REST 클라이언트 · 디스패치"]
-    CLI --> Core
-    Core -->|HTTPS| API["OpenSell REST API"]
-    API -.->|온체인 정산| Arc["Arc · USDC"]
-```
+<div align="center">
+  <img src="assets/architecture.ko.svg" alt="AI 에이전트는 MCP stdio로 연결하고 개발자는 서브커맨드를 실행; 둘 다 opensell-core에 도달하며, core는 공유 20개 도구 레지스트리·REST 클라이언트·디스패치를 가짐; core는 HTTPS로 OpenSell REST API를 호출하고 주문은 Arc 위에서 USDC로 정산됨" width="100%">
+</div>
 
 두 바이너리는 `opensell-core` 위의 얇은 래퍼입니다. 레지스트리와 REST／디스패치 로직은 core에 있습니다.
-레지스트리에 도구를 하나 추가하면 CLI와 MCP 서버에 동시에 나타납니다.
 
 ---
 

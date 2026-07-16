@@ -1,10 +1,9 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="OpenSell — Agentic Commerce, On Chain" width="880">
+<img src="assets/hero.svg" alt="OpenSell — one shared tool registry feeds the opensell CLI and the opensell-mcp server; orders settle on-chain in USDC on Arc" width="100%">
 
-The `opensell` command and the `opensell-mcp` server read one shared tool registry. A developer at
-a terminal and an AI agent over MCP call the same operations, with the same arguments and the same
-permissions, because both come from that single definition.
+**One tool registry, two surfaces.** The `opensell` CLI and the `opensell-mcp` server read the same
+definition, so a developer and an AI agent call the same operations, with the same arguments and permissions.
 
 [![CI](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
@@ -74,18 +73,12 @@ everything above.
 
 ## 🏗 Architecture
 
-```mermaid
-flowchart LR
-    Agent["🤖 AI Agent / LLM runtime"] -->|MCP · stdio| MCP["opensell-mcp"]
-    User["🧑‍💻 Developer / shell"] -->|subcommands| CLI["opensell"]
-    MCP --> Core["opensell-core<br/>registry · REST client · dispatch"]
-    CLI --> Core
-    Core -->|HTTPS| API["OpenSell REST API"]
-    API -.->|on-chain settlement| Arc["Arc · USDC"]
-```
+<div align="center">
+  <img src="assets/architecture.svg" alt="An AI agent connects over MCP stdio and a developer runs subcommands; both reach opensell-core, which holds the shared 20-tool registry, REST client, and dispatch; core calls the OpenSell REST API over HTTPS, and orders settle on-chain in USDC on Arc" width="100%">
+</div>
 
 Both binaries are thin wrappers over `opensell-core`, which holds the registry and the REST and
-dispatch logic. Add a tool to the registry and it shows up in the CLI and the MCP server at once.
+dispatch logic.
 
 ---
 

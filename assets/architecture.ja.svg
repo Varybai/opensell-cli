@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440"
+     role="img" aria-labelledby="at ad" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">
+  <title id="at">OpenSell architecture — one registry, two surfaces, on-chain settlement</title>
+  <desc id="ad">An AI agent connects over MCP stdio and a developer runs subcommands. Both reach opensell-core, which holds the shared 20-tool registry, the REST client, and dispatch. Core calls the OpenSell REST API over HTTPS, and orders settle on-chain in USDC on Arc.</desc>
+  <defs>
+    <linearGradient id="sTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1B44"/><stop offset="1" stop-color="#16297A"/></linearGradient>
+    <linearGradient id="sBot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F6BFF"/><stop offset="1" stop-color="#1E5BFF"/></linearGradient>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7F9FC"/><stop offset="1" stop-color="#EDF1F8"/></linearGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1B44"/><stop offset="1" stop-color="#15275F"/></linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#0B1B44" flood-opacity="0.10"/></filter>
+    <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#9FB2D0"/></marker>
+    <marker id="arwG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3FA971"/></marker>
+  </defs>
+  <rect x="1" y="1" width="1198" height="438" rx="24" fill="url(#bg)" stroke="#E4EAF2" stroke-width="1.5"/>
+
+  <text x="48" y="52" font-size="13" font-weight="700" letter-spacing="1.2" fill="#5B6B84" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">1 つのレジストリ · 2 つの窓口 · オンチェーン決済</text>
+
+  <g fill="none" stroke="#9FB2D0" stroke-width="2.2">
+    <path d="M300 150 L372 150" marker-end="url(#arw)"/>
+    <path d="M300 300 L372 300" marker-end="url(#arw)"/>
+    <path d="M556 150 C616 150 616 205 660 218" marker-end="url(#arw)"/>
+    <path d="M556 300 C616 300 616 245 660 232" marker-end="url(#arw)"/>
+    <path d="M904 225 L960 225" marker-end="url(#arw)"/>
+  </g>
+  <path d="M1060 268 C1060 322 640 300 640 348" fill="none" stroke="#3FA971" stroke-width="2.2" stroke-dasharray="2 7" stroke-linecap="round" marker-end="url(#arwG)"/>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#6B7A94">
+    <text x="336" y="143" text-anchor="middle">MCP·stdio</text>
+    <text x="336" y="293" text-anchor="middle" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">サブコマンド</text>
+    <text x="936" y="216" text-anchor="middle">HTTPS</text>
+  </g>
+
+  <g transform="translate(96 118)" filter="url(#soft)">
+    <rect x="0" y="0" width="204" height="64" rx="14" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/>
+    <circle cx="34" cy="32" r="16" fill="#EEF0FF"/>
+    <circle cx="34" cy="20" r="1.8" fill="#2F6BFF"/><line x1="34" y1="21" x2="34" y2="24" stroke="#2F6BFF" stroke-width="2"/>
+    <rect x="25" y="24" width="18" height="15" rx="4" fill="#2F6BFF"/><circle cx="30.5" cy="31.5" r="1.8" fill="#fff"/><circle cx="37.5" cy="31.5" r="1.8" fill="#fff"/>
+    <text x="60" y="29" font-size="15" font-weight="700" fill="#152447">AI エージェント</text>
+    <text x="60" y="47" font-size="12" fill="#5B6B84" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">LLM ランタイム</text>
+  </g>
+  <g transform="translate(96 268)" filter="url(#soft)">
+    <rect x="0" y="0" width="204" height="64" rx="14" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/>
+    <circle cx="34" cy="32" r="16" fill="#EEF0FF"/>
+    <circle cx="34" cy="26" r="5" fill="#334463"/><path d="M25 41 C25 33 43 33 43 41 Z" fill="#334463"/>
+    <text x="60" y="29" font-size="15" font-weight="700" fill="#152447">開発者</text>
+    <text x="60" y="47" font-size="12" fill="#5B6B84" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">シェル</text>
+  </g>
+
+  <g transform="translate(372 120)" filter="url(#soft)">
+    <rect x="0" y="0" width="184" height="60" rx="13" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/>
+    <rect x="18" y="14" width="9" height="9" rx="2" fill="#7C3AED"/>
+    <text x="34" y="23" font-size="11" font-weight="700" letter-spacing="1" fill="#7C3AED" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">MCP</text>
+    <text x="18" y="46" font-size="15.5" font-weight="700" fill="#152447" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">opensell-mcp</text>
+  </g>
+  <g transform="translate(372 270)" filter="url(#soft)">
+    <rect x="0" y="0" width="184" height="60" rx="13" fill="#0C111B"/>
+    <circle cx="18" cy="17" r="3.5" fill="#FF5F56"/><circle cx="30" cy="17" r="3.5" fill="#FFBD2E"/><circle cx="42" cy="17" r="3.5" fill="#27C93F"/>
+    <text x="18" y="46" font-size="15.5" font-weight="700" fill="#E6EDF3" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"><tspan fill="#3FB950">$</tspan> opensell</text>
+  </g>
+
+  <g transform="translate(660 180)" filter="url(#soft)">
+    <rect x="0" y="0" width="244" height="90" rx="16" fill="url(#navy)"/>
+    <text x="22" y="30" font-size="16" font-weight="800" fill="#fff" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">opensell-core</text>
+    <line x1="22" y1="42" x2="222" y2="42" stroke="#2A3B6B" stroke-width="1"/>
+    <g font-size="12" fill="#C9D6EE" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">
+      <text x="22" y="60"><tspan fill="#8FB0FF" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">▸</tspan> レジストリ · 20 ツール</text>
+      <text x="22" y="78"><tspan fill="#8FB0FF" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">▸</tspan> REST · ディスパッチ</text>
+    </g>
+  </g>
+
+  <g transform="translate(960 190)" filter="url(#soft)">
+    <rect x="0" y="0" width="180" height="70" rx="14" fill="#fff" stroke="#E1E8F2" stroke-width="1.3"/>
+    <text x="20" y="30" font-size="14.5" font-weight="700" fill="#152447">OpenSell</text>
+    <text x="20" y="50" font-size="13" fill="#5B6B84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">REST API</text>
+    <g stroke="#9AA7BD" stroke-width="2" fill="none"><path d="M150 24 v-3 a5 5 0 0 1 10 0 v3"/></g>
+    <rect x="147" y="24" width="16" height="12" rx="2.5" fill="#9AA7BD"/><circle cx="155" cy="30" r="1.6" fill="#fff"/>
+  </g>
+
+  <g transform="translate(520 348)" filter="url(#soft)">
+    <rect x="0" y="0" width="240" height="60" rx="14" fill="#0E7A43"/>
+    <circle cx="34" cy="30" r="17" fill="#0B5E33"/>
+    <path d="M26 30 l6 6 l12 -13" fill="none" stroke="#7EEBA8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="60" y="28" font-size="15" font-weight="800" fill="#EAFBF1" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">Arc · USDC</text>
+    <text x="60" y="46" font-size="11.5" fill="#A7E9C4" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">オンチェーン · usdc_arc</text>
+  </g>
+
+  <text x="800" y="392" font-size="13" fill="#5B6B84" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">レジストリにツールを 1 つ足すと →</text>
+  <text x="800" y="411" font-size="13" font-weight="700" fill="#2F6BFF" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',-apple-system,sans-serif">CLI と MCP に同時に現れる。</text>
+</svg>

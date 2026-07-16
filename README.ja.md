@@ -1,10 +1,9 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="OpenSell — Agentic Commerce, On Chain" width="880">
+<img src="assets/hero.ja.svg" alt="OpenSell — 1 つのツールレジストリが opensell CLI と opensell-mcp サーバーを動かす。注文は Arc 上で USDC として決済" width="100%">
 
-`opensell` コマンドと `opensell-mcp` サーバーは、同じツールレジストリを読み込みます。ターミナルを使う
-開発者も、MCP 経由の AI エージェントも、同じ操作・引数・権限を呼び出します。どちらもこの 1 つの定義から
-生成されるためです。
+**1 つのツールレジストリ、2 つの窓口。** `opensell` CLI と `opensell-mcp` サーバーは同じ定義を読むので、
+開発者も AI エージェントも同じ操作・引数・権限を呼び出します。
 
 [![CI](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
@@ -74,18 +73,11 @@ MCP サーバーです。
 
 ## 🏗 アーキテクチャ
 
-```mermaid
-flowchart LR
-    Agent["🤖 AI エージェント / LLM ランタイム"] -->|MCP · stdio| MCP["opensell-mcp"]
-    User["🧑‍💻 開発者 / シェル"] -->|サブコマンド| CLI["opensell"]
-    MCP --> Core["opensell-core<br/>レジストリ · REST クライアント · ディスパッチ"]
-    CLI --> Core
-    Core -->|HTTPS| API["OpenSell REST API"]
-    API -.->|オンチェーン決済| Arc["Arc · USDC"]
-```
+<div align="center">
+  <img src="assets/architecture.ja.svg" alt="AI エージェントは MCP stdio で接続し、開発者はサブコマンドを実行。どちらも opensell-core に到達し、core は共有の 20 ツールレジストリ・REST クライアント・ディスパッチを持つ。core は HTTPS で OpenSell REST API を呼び、注文は Arc 上で USDC として決済される" width="100%">
+</div>
 
 2 つのバイナリは `opensell-core` の薄いラッパーです。レジストリと REST／ディスパッチの処理は core にあります。
-レジストリにツールを 1 つ足すと、CLI と MCP サーバーの両方に同時に現れます。
 
 ---
 

@@ -1,9 +1,9 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="OpenSell — Agentic Commerce, On Chain" width="880">
+<img src="assets/hero.zh-CN.svg" alt="OpenSell — 同一份工具注册表驱动 opensell CLI 和 opensell-mcp 服务器；订单在 Arc 链上以 USDC 结算" width="100%">
 
-`opensell` 命令和 `opensell-mcp` 服务器读取同一份工具注册表。开发者在终端里敲命令，AI 智能体通过 MCP
-调用，二者拿到的操作、参数和权限完全一致，因为它们都由这份定义生成。
+**一份工具注册表，两个界面。** `opensell` CLI 和 `opensell-mcp` 服务器读取同一份定义，所以开发者和
+AI 智能体调用同样的操作，参数和权限也完全一致。
 
 [![CI](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Varybai/opensell-cli/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
@@ -68,18 +68,11 @@ OpenSell 把完整的交易闭环放在一个市场里，智能体可以自己�
 
 ## 🏗 架构
 
-```mermaid
-flowchart LR
-    Agent["🤖 AI 智能体 / LLM 运行时"] -->|MCP · stdio| MCP["opensell-mcp"]
-    User["🧑‍💻 开发者 / 终端"] -->|子命令| CLI["opensell"]
-    MCP --> Core["opensell-core<br/>注册表 · REST 客户端 · 分发"]
-    CLI --> Core
-    Core -->|HTTPS| API["OpenSell REST API"]
-    API -.->|链上结算| Arc["Arc · USDC"]
-```
+<div align="center">
+  <img src="assets/architecture.zh-CN.svg" alt="AI 智能体通过 MCP stdio 接入，开发者用子命令调用；两者都到达 opensell-core（共享的 20 个工具注册表、REST 客户端、分发）；core 经 HTTPS 调用 OpenSell REST API，订单在 Arc 链上以 USDC 结算" width="100%">
+</div>
 
-两个二进制都是 `opensell-core` 之上的薄封装，注册表和 REST／分发逻辑都在 core 里。往注册表加一个工具，
-它就同时出现在 CLI 和 MCP 服务器里。
+两个二进制都是 `opensell-core` 之上的薄封装，注册表和 REST／分发逻辑都在 core 里。
 
 ---
 
