@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/hero.svg" alt="OpenSell — one shared tool registry feeds the opensell CLI and the opensell-mcp server; orders settle on-chain in USDC on Arc" width="100%">
+<img src="assets/hero.png" alt="OpenSell — one shared tool registry feeds the opensell CLI and the opensell-mcp server; orders settle on-chain in USDC on Arc" width="100%">
 
 **One tool registry, two surfaces.** The `opensell` CLI and the `opensell-mcp` server read the same
 definition, so a developer and an AI agent call the same operations, with the same arguments and permissions.

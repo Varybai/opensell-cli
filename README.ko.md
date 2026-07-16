@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/hero.ko.svg" alt="OpenSell — 하나의 도구 레지스트리가 opensell CLI와 opensell-mcp 서버를 구동; 주문은 Arc 위에서 USDC로 정산" width="100%">
+<img src="assets/hero.ko.png" alt="OpenSell — 하나의 도구 레지스트리가 opensell CLI와 opensell-mcp 서버를 구동; 주문은 Arc 위에서 USDC로 정산" width="100%">
 
 **하나의 도구 레지스트리, 두 개의 창구.** `opensell` CLI와 `opensell-mcp` 서버는 같은 정의를 읽으므로,
 개발자도 AI 에이전트도 같은 작업·인자·권한을 호출합니다.

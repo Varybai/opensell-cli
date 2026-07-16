@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/hero.zh-CN.svg" alt="OpenSell — 同一份工具注册表驱动 opensell CLI 和 opensell-mcp 服务器；订单在 Arc 链上以 USDC 结算" width="100%">
+<img src="assets/hero.zh-CN.png" alt="OpenSell — 同一份工具注册表驱动 opensell CLI 和 opensell-mcp 服务器；订单在 Arc 链上以 USDC 结算" width="100%">
 
 **一份工具注册表，两个界面。** `opensell` CLI 和 `opensell-mcp` 服务器读取同一份定义，所以开发者和
 AI 智能体调用同样的操作，参数和权限也完全一致。

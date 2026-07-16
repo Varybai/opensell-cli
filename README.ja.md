@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/hero.ja.svg" alt="OpenSell — 1 つのツールレジストリが opensell CLI と opensell-mcp サーバーを動かす。注文は Arc 上で USDC として決済" width="100%">
+<img src="assets/hero.ja.png" alt="OpenSell — 1 つのツールレジストリが opensell CLI と opensell-mcp サーバーを動かす。注文は Arc 上で USDC として決済" width="100%">
 
 **1 つのツールレジストリ、2 つの窓口。** `opensell` CLI と `opensell-mcp` サーバーは同じ定義を読むので、
 開発者も AI エージェントも同じ操作・引数・権限を呼び出します。
